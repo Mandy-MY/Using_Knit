@@ -1,0 +1,131 @@
+---
+title: "Wonderful markdown"
+author: Wonder Woman
+output: 
+  html_document:
+    toc: TRUE
+    toc_float: TRUE
+    code_folding: hide
+    theme: cerulean
+    highlight: zenburn
+---
+
+# A Title
+
+Make text **bold** or _italic_ or ``code``
+
+* First thing to do
+* Second thing to do
+* Third line
+
+- make sure you leave a blank line so lists will appear as new paragraph
+- style of dot point in markdown doesn't change on html output
+- OK?
+
+Some text that needs footnoting[^1]
+
+[^1]: This is the footnote text
+
+<!-- this is how to write comments in markdown not visible in the documents-->
+
+1. numbered list
+2. example
+3. all good
+
+[Link text here](https://csiro-data-school.github.io/rmarkdown/01-Literate-Programming/index.html)
+
+!["image caption - my 30 years cake"](../results/cake.jpg){width=100px}
+
+## A Subtitle
+
+Add a sentence in your document that shows the versions of the software used to create it. Using inline code sections, describe which version of R and the tidyverse package you are using by calling the version of R, which is `r getRversion()` and the R package tidyverse version is `r packageVersion("tidyverse")`.
+
+```{r the_ultimate_question}
+# everything between the back-ticks is now recognised not as text but as code
+
+6*9
+```
+
+```{r}
+
+```
+
+## A Second
+
+### A Section Heading
+
+writing R code into the document
+
+```{r}
+library(tidyverse) # load (and run) teh tidyverse
+gapminder <- read_csv("data/gapminder.csv") # create the gapminder variable
+
+australia <- gapminder %>% 
+  filter(country == "Australia") #filter for Australia
+
+australia # prints the australia dataframe to screen
+
+ggplot(data = australia,
+       mapping = aes(x = year,
+                     y = pop)) +
+  geom_point() +
+  labs(title = "Australian population over time",
+       x = "Year",
+       y = "Population")
+```
+
+
+### Another section
+
+This is to show how the code can be done in "chunks" but KnitR will recognise all the code in the document as one; so you can refer to data previously created. Tip: if you have long line of code, you can select a section, and go to the insert button. I am copying the code above to demonstrate this and then splitting it up with comments
+
+We are also going to add some options for how the code and or output will display. These are inside the curly brackets. the options are available form the settings button (cog image) in the code chunk
+
+eval=FALSE will not run yuur data, it will show the code but not ourput
+echo=FALSE controls if the code is showed in the document (and only show the output)
+results whether or not to show the results at that point
+warning whether or not tos show warnings
+message whether or not to show messages
+
+
+This is the first chunk to load the tidyverse, displayed without messages and warnings just the code line
+```{r library, message=FALSE, warning=FALSE}
+library(tidyverse) # load (and run) the tidyverse
+```
+
+
+This is the second chunk. Read in the data, filter for Australia, display the Australia dataframe.
+
+There are `r nrow(gapminder)` rows in the gapminder data. 
+
+```{r Australia data}
+gapminder <- read_csv("data/gapminder.csv") # create the gapminder variable
+```
+
+you usually run the code so you can get some parameters to refer to in the following paragraph
+
+```{r}
+australia <- gapminder %>% 
+  filter(country == "Australia") #filter for Australia
+
+australia # prints the australia dataframe to screen
+```
+
+We can now see there are `r nrow(australia)` rows in the australia data
+
+and this is the last chunk to plot the data
+```{r plot aus pop}
+ggplot(data = australia,
+       mapping = aes(x = year,
+                     y = pop)) +
+  geom_point() +
+  labs(title = "Australian population over time",
+       x = "Year",
+       y = "Population")
+```
+
+or to load global settings - HINT using the double colon :: will allow you to load specific parts of a package without having to load the package, eg if we were to use the code in an R chunck
+
+knitr::opts_chunk$set(message=FALSE, warning=FALSE, echo=FALSE, fig.width=11)  it will set all messages and warnings to false (display code only) and set the figures to a standard width 11 inches
+
+
